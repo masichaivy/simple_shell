@@ -14,6 +14,7 @@ void prompt(char **av, char **env)
 	int n, i;
 	ssize_t len;
 	char *cmd[];
+	pid_t child_prcess
 
 	n = 0;
 	cmd = {NULL, NULL};
@@ -34,6 +35,13 @@ void prompt(char **av, char **env)
 		{
 			if (str[i] == '\n')
 				str[i] = 0;
+		}
+
+		child_prcess = fork();
+		if (child_prcess == -1)
+		{
+			free(str);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
