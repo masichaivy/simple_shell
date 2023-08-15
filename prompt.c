@@ -1,6 +1,8 @@
 #include "shell.h"
 #include <sys/wait.h>
 
+void prompt_display(void);
+
 /**
  * prompt - displays prompt
  * @av: arg vector
@@ -13,25 +15,20 @@ void prompt(char **av, char **env)
 {
 	char *str = NULL;
 	int i, status;
-	size_t n;
+	size_t n = 0;
 	ssize_t len;
 	char *user_cmd[] = {NULL, NULL};
 	pid_t child_prcess;
 
-	n = 0;
 	while (1)
 	{
-		if(isatty(STDIN_FILENO))
-			printf("savi->$ ");
-
+		prompt_display();
 		len = getline(&str, &n, stdin);
-
 		if (len == -1)
 		{
 			free(str);
 			exit(EXIT_FAILURE);
 		}
-
 		i = 0;
 		while (str[i])
 		{
@@ -40,7 +37,6 @@ void prompt(char **av, char **env)
 			i++;
 		}
 		user_cmd[0] = str;
-
 		child_prcess = fork();
 		if (child_prcess == -1)
 		{
@@ -57,4 +53,16 @@ void prompt(char **av, char **env)
 			wait(&status);
 		}
 	}
+}
+
+/**
+ * prompt_display - displays prompt
+ *
+ *
+ */
+
+void prompt_display(void)
+{
+	if (isatty(STDIN_FILENO))
+		printf("savi->$ ");
 }
