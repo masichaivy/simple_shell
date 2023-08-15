@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <sys/wait.h>
 
 /**
  * prompt - displays prompt
@@ -11,16 +12,17 @@
 void prompt(char **av, char **env)
 {
 	char *str = NULL;
-	int n, i;
+	int i, status;
+	size_t n;
 	ssize_t len;
-	char *cmd[];
-	pid_t child_prcess
+	char *user_cmd[] = {NULL, NULL};
+	pid_t child_prcess;
 
 	n = 0;
-	cmd = {NULL, NULL};
 	while (1)
 	{
-		printf("savi->$ ");
+		if(isatty(STDIN_FILENO))
+			printf("savi->$ ");
 
 		len = getline(&str, &n, stdin);
 
@@ -35,13 +37,24 @@ void prompt(char **av, char **env)
 		{
 			if (str[i] == '\n')
 				str[i] = 0;
+			i++;
 		}
+		user_cmd[0] = str;
 
 		child_prcess = fork();
 		if (child_prcess == -1)
 		{
 			free(str);
 			exit(EXIT_FAILURE);
+		}
+		if (child_prcess == 0)
+		{
+			if (execve(user_cmd[0], user_cmd, env) == -1)
+				printf("%s: No such file or directory\n", av[0]);
+		}
+		else
+		{
+			wait(&status);
 		}
 	}
 }
