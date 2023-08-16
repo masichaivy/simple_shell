@@ -1,6 +1,8 @@
 #include "shell.h"
 #include <sys/wait.h>
 
+#define MAX_INPUT_SIZE 10
+
 void prompt_display(void);
 
 /**
@@ -14,10 +16,10 @@ void prompt_display(void);
 void prompt(char **av, char **env)
 {
 	char *str = NULL;
-	int i, status;
+	int i, j, status;
 	size_t n = 0;
 	ssize_t len;
-	char *user_cmd[] = {NULL, NULL};
+	char *user_cmd[MAX_INPUT_SIZE];
 	pid_t child_prcess;
 
 	while (1)
@@ -36,7 +38,10 @@ void prompt(char **av, char **env)
 				str[i] = 0;
 			i++;
 		}
-		user_cmd[0] = str;
+		j = 0;
+		user_cmd[j] = strtok(str, " ");
+		while (user_cmd[j] != NULL)
+			user_cmd[++j] = strtok(NULL, " ");
 		child_prcess = fork();
 		if (child_prcess == -1)
 		{
@@ -56,9 +61,7 @@ void prompt(char **av, char **env)
 }
 
 /**
- * prompt_display - displays prompt
- *
- *
+ * prompt_display - displays prompt *
  */
 
 void prompt_display(void)
