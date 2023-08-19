@@ -5,7 +5,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-void prompt(char **av, char **env);
+void prompt(char **env);
+void prt_error(char **str);
+void fork_exec(char **user_cmd, char **env, char *str);
 
 #endif
