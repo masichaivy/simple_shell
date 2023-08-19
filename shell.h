@@ -11,5 +11,6 @@
 void prompt(char **env);
 void prt_error(char **str);
 void fork_exec(char **user_cmd, char **env, char *str);
+int str_cmp(char *s1, char *s2);
 
 #endif

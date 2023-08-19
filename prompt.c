@@ -39,6 +39,8 @@ void prompt(char **env)
 		user_cmd[j] = strtok(str, " ");
 		while (user_cmd[j] != NULL)
 			user_cmd[++j] = strtok(NULL, " ");
+		if (str_cmp("exit", user_cmd[0]) == 0)
+			break;
 		fork_exec(user_cmd, env, str);
 	}
 }
