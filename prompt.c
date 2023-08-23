@@ -41,7 +41,7 @@ void prompt(char **env)
 			user_cmd[++j] = strtok(NULL, " ");
 		if (str_cmp("exit", user_cmd[0]) == 0)
 		{
-			free(str)
+			free(str);
 			exit(EXIT_SUCCESS);
 		}
 		fork_exec(user_cmd, env, str);
