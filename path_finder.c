@@ -2,6 +2,14 @@
 
 #define MAX_PATH_LEN 20
 
+/**
+ * path_finder - finds environment path
+ * @cmd: first argument of command
+ * @user_cmd: command array
+ *
+ * Return: 0
+ */
+
 int path_finder(const char *cmd, char **user_cmd)
 {
 	char *path = getenv("PATH");

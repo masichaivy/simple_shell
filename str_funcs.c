@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/**
+ * str_cpy - copies string
+ * @dest: the destination buffer
+ * @src: the source buffer
+ *
+ * Return: pointer to destination buffer
+ */
+
 char *str_cpy(char *dest, const char *src)
 {
 	char *original_dest = dest;
@@ -14,6 +22,14 @@ char *str_cpy(char *dest, const char *src)
 	*dest = '\0';
 	return (original_dest);
 }
+
+/**
+ * str_cat - concatenates two strings
+ * @dest: the destination buffer
+ * @src: the source buffer
+ *
+ * Return: pointer to destination buffer
+ */
 
 char *str_cat(char *dest, const char *src)
 {
@@ -33,6 +49,13 @@ char *str_cat(char *dest, const char *src)
 	return (original_dest);
 }
 
+/**
+ * str_len - returns the length of a string
+ * @str: the string whose length to check
+ *
+ * Return: length of string
+ */
+
 size_t str_len(const char *str)
 {
 	const char *ptr = str;
@@ -41,6 +64,13 @@ size_t str_len(const char *str)
 		ptr++;
 	return ((size_t)(ptr - str));
 }
+
+/**
+ * str_dup - duplicates strings
+ * @src: the source buffer
+ *
+ * Return: pointer to new buffer
+ */
 
 char *str_dup(const char *src)
 {
