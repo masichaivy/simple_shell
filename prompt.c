@@ -32,7 +32,7 @@ void prompt(char **env)
 		while (str[i])
 		{
 			if (str[i] == '\n')
-				str[i] = 0;
+				str[i] = '\0';
 			i++;
 		}
 		j = 0;
@@ -44,7 +44,17 @@ void prompt(char **env)
 			free(str);
 			exit(EXIT_SUCCESS);
 		}
-		fork_exec(user_cmd, env, str);
+		if (user_cmd[0] != NULL)
+		{
+			if (path_finder(user_cmd[0], user_cmd))
+			{
+				fork_exec(user_cmd, env, str);
+			}
+			else
+			{
+				printf("%s: command not found\n", user_cmd[0]);
+			}
+		}
 	}
 }
 
