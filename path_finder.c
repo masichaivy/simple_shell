@@ -1,56 +1,51 @@
 #include "shell.h"
 
-#define MAX_PATH_LEN 20
-
 /**
- * path_finder - finds environment path
- * @cmd: first argument of command
- * @user_cmd: command array
+ * path_finder - gets the user full command if found.
+ * @cmd: argument command.
  *
- * Return: 0
- */
-
-int path_finder(const char *cmd, char **user_cmd)
+ * Return: the full command if found,
+ *	Null if not found
+*/
+char *path_finder(char *cmd)
 {
-	char *path = getenv("PATH");
-	char *path_copy = strdup(path);
-	char *dir = strtok(path_copy, ":");
+	char *path, *path_copy, *token, *full_cmd;
+	struct stat st;
 
-	if (path == NULL)
+	path = getenv("PATH");
+	if (path)
 	{
-		printf("Error: PATH variable not found\n");
-		return (0);
-	}
+		path_copy = strdup(path);
+		token = strtok(path_copy, ":");
 
-	if (cmd[0] == '/')
-	{
-		if (access(cmd, X_OK) == 0)
+		while (token)
 		{
-			user_cmd[0] = str_dup(cmd);
-			return (1);
+			full_cmd = malloc(strlen(cmd) + strlen(token) + 2);
+			if (full_cmd == NULL)
+			{
+				perror("malloc");
+				exit(EXIT_FAILURE);
+			}
+			strcpy(full_cmd, token);
+			strcat(full_cmd, "/");
+			strcat(full_cmd, cmd);
+			strcat(full_cmd, "\0");
+			if (stat(full_cmd, &st) == 0)
+			{
+				free(path_copy);
+				return (full_cmd);
+			}
+			else
+			{
+				free(full_cmd);
+				token = strtok(NULL, ":");
+			}
 		}
-		return (0);
+		free(path_copy);
+		if (stat(cmd, &st) == 0)
+			return (cmd);
+		return (NULL);
 	}
-
-	while (dir != NULL)
-	{
-		char full_path[MAX_PATH_LEN];
-
-		str_cpy(full_path, dir);
-		str_cat(full_path, "/");
-		str_cat(full_path, cmd);
-
-		if (access(full_path, X_OK) == 0)
-		{
-			user_cmd[0] = str_dup(full_path);
-			free(path_copy);
-			return (1);
-		}
-
-		dir = strtok(NULL, ":");
-	}
-
-	free(path_copy);
-	return (0);
+	return (NULL);
 }
 
