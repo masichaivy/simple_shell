@@ -55,9 +55,9 @@ void exec_cmd(char *args[])
 		else if (strcmp(cmd, "setenv") == 0)
 		{
 			if (getenv(args[2]) && args[2])
-				_setenv(args[1], args[2], 1);
+				set_env(args[1], args[2], 1);
 			else
-				_setenv(args[1], args[2], 0);
+				set_env(args[1], args[2], 0);
 		}
 		else if (strcmp(cmd, "unsetenv") == 0 && args[1])
 		{
