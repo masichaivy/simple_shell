@@ -27,4 +27,5 @@ void fork_exec(char **user_cmd, char **env, char *str)
 	{
 		wait(&status);
 	}
+	return (0);
 }
