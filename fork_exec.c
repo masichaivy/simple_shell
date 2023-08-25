@@ -69,4 +69,6 @@ void exec_cmd(char *args[])
 			fork_exec(cmd, args);
 		}
 	}
+	else
+		exit(0);
 }
