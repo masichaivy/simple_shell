@@ -12,7 +12,7 @@ void fork_exec(char *cmd, char *args[])
 	int status;
 	pid_t pid;
 
-	full_cmd = get_command(cmd);
+	full_cmd = path_finder(cmd);
 	if (full_cmd)
 	{
 		pid = fork();
@@ -46,7 +46,7 @@ void exec_cmd(char *args[])
 		if (strcmp(cmd, "exit") == 0)
 			exit(0);
 		else if (strcmp(cmd, "env") == 0)
-			printenv();
+			print_env();
 		else if (strcmp(cmd, "echo") == 0 && args[2])
 		{
 			if (strcmp(args[2], "|") == 0)
@@ -62,7 +62,7 @@ void exec_cmd(char *args[])
 		else if (strcmp(cmd, "unsetenv") == 0 && args[1])
 		{
 			if (args[1] && getenv(args[1]))
-				_unsetenv(args[1]);
+				unset_env(args[1]);
 		}
 		else
 		{

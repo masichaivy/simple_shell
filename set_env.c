@@ -34,7 +34,7 @@ int set_env(const char *name, const char *value, int overwrite)
 		}
 		i++;
 	}
-	env[i] = new_env_nm;
-	env[i + 1] = NULL;
+	environ[i] = new_env_nm;
+	environ[i + 1] = NULL;
 	return (0);
 }

@@ -17,7 +17,7 @@ int main(int ac, char **av)
 	if (ac == 1)
 		while (1)
 		{
-			write(1, "savi=>$ ", 2);
+			write(1, "$ ", 2);
 			n_char = get_line(&buffer, &buffer_size, stdin);
 			if (n_char == -1)
 			{
