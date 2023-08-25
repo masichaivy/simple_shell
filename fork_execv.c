@@ -1,14 +1,14 @@
 #include "shell.h"
 
-
 /**
- * fork_exec - Executes the command
+ * extra_fork_exec - Executes the command
  * @args: An array of user arguments
  * @argv: Array of command line arguments
+ * @full_cmd: Full command
  * Return: Void
  */
 
-int fork_exec(char **args, char **argv)
+int fork_execv(char **args, char **argv, char *full_cmd)
 {
 	pid_t pid_num;
 	int status;
@@ -16,12 +16,12 @@ int fork_exec(char **args, char **argv)
 	pid_num = fork();
 	if (pid_num < 0)
 	{
-		perror(argv[0]);
+		perror(full_cmd);
 		exit(-1);
 	}
 	else if (pid_num == 0)
 	{
-		execve(args[0], args, environ);
+		execve(full_cmd, args, environ);
 		perror(argv[0]);
 		exit(2);
 	}
@@ -30,12 +30,11 @@ int fork_exec(char **args, char **argv)
 		wait(&status);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
-
 		errno = status;
 
+		free(full_cmd);
 		free(args);
 	}
-
 	return (status);
 }
 

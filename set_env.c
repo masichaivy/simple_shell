@@ -1,40 +1,30 @@
 #include "shell.h"
 
-/**
- * set_env - set environment variable.
- * @name: variable name.
- * @value: value.
- * @overwrite: 0 or 1
- *
- * Return: 0 on success,
- *	-1 on failure.
- */
-int set_env(const char *name, const char *value, int overwrite)
+int set_env(char **args, char *nme_prog, char *buffer)
 {
-	int i = 0, len = 0;
-	char *new_env_nm;
+	int executed = 0, idx = 0;
 
-	if (!name || !value)
-		return (-1);
-	new_env_nm = malloc(strlen(name) + strlen(value) + 2);
-	strcpy(new_env_nm, name);
-	strcat(new_env_nm, "=");
-	strcat(new_env_nm, value);
+	(void)nme_prog;
 
-	len = strlen(name);
-	while (environ[i])
+	if (strcmp(args[0], "exit") == 0)
 	{
-		if (strncmp(environ[i], name, len) == 0)
-		{
-			if (overwrite)
-			{
-				environ[i] = new_env_nm;
-			}
-			return (0);
-		}
-		i++;
+		free(args);
+		free(buffer);
+		exit(errno);
 	}
-	environ[i] = new_env_nm;
-	environ[i + 1] = NULL;
-	return (0);
+	else if (strcmp(args[0], "env") == 0)
+	{
+		while (environ[idx] != NULL)
+		{
+			write(1, environ[idx], strlen(environ[idx]));
+			write(1, "\n", 1);
+
+			idx++;
+		}
+		free(args);
+		executed = 1;
+	}
+
+	return (executed);
 }
+

@@ -1,64 +1,64 @@
 #include "shell.h"
 
 /**
- * runShell - runs the shell.
- * @buffer: line entered by the user.
+ * main - Simple shell entry point
+ * @ac: Argument counter
+ * @argv: Argument Vector
+ * Return: Errno
  *
- * Return: Nothing.
  */
-void runShell(char *buffer)
+
+int main(int ac, char **argv)
 {
-	char *buffer_copy = NULL;
 
-	buffer_copy = malloc(sizeof(char) * strlen(buffer));
-	if (buffer_copy == NULL)
+	int mode = isatty(0);
+	char *buffer = NULL, cmdc, **args = NULL, *full_cmd = NULL;
+	size_t buff_Size = 0;
+	ssize_t num = 0;
+	int count = 0, builtin_status = 0;
+	errno = 0;
+
+	(void)ac;
+	while (1)
 	{
-		perror("buffer_copy: malloc error");
-		exit(1);
-	}
-	strcpy(buffer_copy, buffer);
-	handle_args(buffer, buffer_copy);
-	free(buffer_copy);
-}
-/**
- * main - main function.
- * @ac: arguments number.
- * @av: array of arguments.
- *
- * Return: Always 0.
- */
-int main(int ac, char **av)
-{
-	char *buffer = NULL;
-	size_t buffer_size = 0;
-	ssize_t n_char;
-
-	(void)av;
-	if (isatty(fileno(stdin)))
-	{
-
-	if (ac == 1)
-		while (1)
-		{
+		count++;
+		if (mode == 1)
 			write(1, "$ ", 2);
-			n_char = get_line(&buffer, &buffer_size, stdin);
-			if (n_char == -1)
-			{
-				printf("\n");
-				return (-1);
-			}
-			if (strcmp(buffer, "\n") != 0)
-			{
-				runShell(buffer);
-			}
-		}
-	}
-	else
-		while (get_line(&buffer, &buffer_size, stdin))
+
+		num = getline(&buffer, &buff_Size, stdin);
+		if (num == -1)
 		{
-			runShell(buffer);
-			exit(0);
+			free(buffer);
+			exit(errno);
 		}
-	free(buffer);
-	return (0);
+		fix_comments(buffer);
+		args = tokenizah(buffer);
+		if (args[0] == NULL)
+		{
+			free(args);
+			continue;
+		}
+
+		if (access(args[0], X_OK) == -1)
+		{
+			builtin_status = set_env(args, argv[0], buffer);
+			if (builtin_status == 1)
+				continue;
+			full_cmd = get_full_path(path_finder(), args[0]);
+			if (full_cmd == NULL)
+			{
+				cmdc = (count + '0');
+				prt_error(argv[0], cmdc, args[0]);
+				free(args);
+				errno = 127;
+				continue;
+			}
+		fork_execv(args, argv, full_cmd);
+			continue;
+		}
+		fork_exec(args, argv);
+	}
+
+	return (errno);
 }
+
