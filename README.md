@@ -80,13 +80,11 @@ To run the project, execute the following command:
 👤 **Ivy Masicha**
 
 - GitHub: [@masichaivy](https://github.com/masichaivy)
-- Twitter: [@otsola_vy](https://twitter.com/otsola_vy)
 - LinkedIn: [Ivy-Masicha](https://www.linkedin.com/in/ivy-masicha/)
 
 👤 **Sam Kuria**
 
 - GitHub: [@qurriahSam](https://github.com/qurriahSam)
-- Twitter: [@Kuriah_sam](https://twitter.com/Kuriah_sam)
 - LinkedIn: [Sam-Kuria](https://www.linkedin.com/in/sam-kuria/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
